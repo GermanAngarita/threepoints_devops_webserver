@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Pruebas de SAST
+      run: echo "Ejecución de pruebas de SAST"
+
+    - name: Crear archivo credentials.ini
+      run: echo -e "[CREDENTIALS]\nUSERNAME=${{ secrets.USERNAME }}\nPASSWORD=${{ secrets.PASSWORD }}" > credentials.ini
+
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
